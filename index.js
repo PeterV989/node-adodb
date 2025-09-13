@@ -50,11 +50,11 @@ class ADODB {
     return this.proxy.exec('execute', params);
   }
 
-   /**
-   * @method transaction
-   * @param {string} sql
-   * @returns {Promise}
-   */
+  /**
+  * @method transaction
+  * @param {string} sql
+  * @returns {Promise}
+  */
   transaction(sql) {
     debug('cmd:', 'transaction');
     debug('sql:', sql);
@@ -68,15 +68,23 @@ class ADODB {
   /**
    * @method query
    * @param {string} sql
+   * @param boolean FetchArrays (optional)
    * @returns {Promise}
    */
-  query(sql) {
+  query(sql, FetchArrays) {
     debug('cmd:', 'query');
     debug('sql:', sql);
 
-    const connection = this.connection;
+    const params = {
+      connection: this.connection,
+      sql: sql
+    }
 
-    return this.proxy.exec('query', { connection, sql });
+    if (arguments.length > 1) {
+      params.FetchArrays = !!FetchArrays;
+    }
+
+    return this.proxy.exec('query', params);
   }
 
   /**

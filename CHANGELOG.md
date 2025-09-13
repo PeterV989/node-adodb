@@ -1,3 +1,8 @@
+# 5.0.4 / 2025/09/13
+
+- Added optional parameter **FetchArrays** to query() to return the results of the query as an object.
+- Added support to return an object containing arrays of field names, field types, and the results in arrays. Also trims leading & trainling spaces from string types.
+
 # 5.0.3 / 2020/03/02
 
 - Fixed error catch

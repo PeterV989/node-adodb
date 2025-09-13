@@ -44,6 +44,22 @@ if (fs.existsSync(cscript) && fs.existsSync(source)) {
         .catch(next);
     });
 
+    it('query', next => {
+      connection
+        .query('SELECT * FROM Users', true)
+        .then(data => {
+          expect(Object.keys(data).length).to.equal(2);
+          expect(data).to.have.ownProperty('FieldMetaData');
+          expect(data.FieldMetaData).to.have.ownProperty('FieldNames');
+          expect(data.FieldMetaData.FieldNames.length).to.equal(5);
+          expect(data.ResultSet[0][1]).to.equal('Nuintun');
+          expect(data.FieldMetaData.FieldNames[1]).to.equal('UserName');
+          expect(data.ResultSet[2][1]).to.equal('张三');
+          next();
+        })
+        .catch(next);
+    })
+
     it('transaction', next => {
       connection
         .transaction([`INSERT INTO Users(UserId, UserName, UserSex, UserBirthday, UserMarried) VALUES (10, "Tom", "Male", "1981/5/10", 0);`,
@@ -55,12 +71,12 @@ if (fs.existsSync(cscript) && fs.existsSync(source)) {
         })
         .catch(ex => {
           connection
-          .query('SELECT * FROM Users')
-          .then(data => {
-            expect(data.length).to.equal(3);
-            next();
-          })
-          .catch(next);
+            .query('SELECT * FROM Users')
+            .then(data => {
+              expect(data.length).to.equal(3);
+              next();
+            })
+            .catch(next);
         });
     });
 
@@ -126,7 +142,7 @@ if (fs.existsSync(cscript) && fs.existsSync(source)) {
             'INSERT INTO Users(UserName, UserSex, UserBirthday, UserMarried) VALUES ("Alice", "Female", "1986/3/9", 0)',
             'SELECT @@Identity AS id'
           )
-          .then(function(data) {
+          .then(function (data) {
             expect(data.length).to.equal(1);
             expect(data[0].id).to.equal(13);
             next();

@@ -65,6 +65,16 @@ connection
     console.error(error);
   });
 
+// Query with return as record type
+connection
+  .query('SELECT * FROM Users', true)
+  .then(data => {
+    console.log(JSON.stringify(data, null, 2));
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
 // Schema
 connection
   .schema(20)
@@ -103,9 +113,9 @@ query();
 
 > Initialization database link parameters.
 
-`ADODB.query(sql): Promise`
+`ADODB.query(sql[, FetchArrays]): Promise`
 
-> Execute a SQL statement that returns a value.
+> Execute a SQL statement that returns a value. value is an array of records when FetchArrays is falsey. value is a record type when FetchArrays is true.
 
 `ADODB.execute(sql[, scalar]): Promise`
 
@@ -134,7 +144,7 @@ query();
 
 ### Notes:
 
-> The library need system support `Microsoft.Jet.OLEDB.4.0` or `Microsoft.ACE.OLEDB.12.0`, `Windows XP SP2` above support `Microsoft.Jet.OLEDB.4.0` by default, Others need to install support!
+> The library need system support `Microsoft.Jet.OLEDB.4.0` or `Microsoft.ACE.OLEDB.12.0`, `Windows XP SP2` above support `Microsoft.Jet.OLEDB.4.0` by default, Others need to install support! Must set x64 to false when accessing Jet (.mdb) databases.
 >
 > Recommended use `Microsoft.ACE.OLEDB.12.0`, download: [Microsoft.ACE.OLEDB.12.0](https://www.microsoft.com/en-us/download/details.aspx?id=13255)
 
